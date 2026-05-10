@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>羽球雙打計分系統</title>
+<style>
+body{
+  margin:0;
+  padding:16px;
+  font-family:Arial,"Noto Sans TC",sans-serif;
+  background:#f3f4f6;
+  box-sizing:border-box;
+}
+*{box-sizing:border-box;}
+.container{
+  max-width:1400px;
+  margin:auto;
+}
+.card{
+  background:#fff;
+  border-radius:20px;
+  padding:18px;
+  margin-bottom:16px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+h1,h2,h3{margin-top:0;}
+.input-row{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+input{
+  flex:1;
+  min-width:200px;
+  padding:14px;
+  border-radius:12px;
+  border:1px solid #ccc;
+  font-size:18px;
+}
+button{
+  border:none;
+  border-radius:14px;
+  cursor:pointer;
+}
+.btn-blue{background:#2563eb;color:#fff;padding:14px 24px;font-size:18px;}
+.btn-purple{background:#9333ea;color:#fff;padding:14px 24px;font-size:18px;}
+.btn-gray{background:#374151;color:#fff;padding:14px 24px;font-size:18px;}
+.btn-indigo{background:#4f46e5;color:#fff;padding:14px 24px;font-size:18px;}
+.btn-green{background:#16a34a;color:#fff;}
+.btn-red{background:#dc2626;color:#fff;}
+
+.players{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:10px;
+  margin-top:20px;
+}
+.player-item{
+  background:#f3f4f6;
+  padding:12px;
+  border-radius:12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.info{
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+  margin-top:20px;
+}
+.info-box{
+  background:#dbeafe;
+  padding:14px 20px;
+  border-radius:12px;
+  font-size:20px;
+  font-weight:bold;
+}
+.match-item{
+  border:2px solid #ddd;
+  border-radius:14px;
+  padding:15px;
+  margin-bottom:10px;
+}
+.active-match{
+  border-color:#2563eb;
+  background:#dbeafe;
+}
+
+.score-board{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+.team{
+  border-radius:24px;
+  padding:14px;
+  min-height:560px;
+  display:grid;
+  grid-template-rows:auto 1fr auto auto;
+  gap:12px;
+}
+.left-team{
+  background:#dbeafe;
+}
+.right-team{
+  background:#fee2e2;
+}
+.team-title{
+  text-align:center;
+  font-size:28px;
+  font-weight:900;
+  margin:0;
+}
+.team-body{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:12px;
+  align-items:stretch;
+  min-height:360px;
+}
+.score-panel{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  background:rgba(255,255,255,0.35);
+  border-radius:20px;
+  padding:10px;
+}
+.score{
+  font-size:180px;
+  font-weight:900;
+  line-height:1;
+  color:#000;
+}
+.court-area{
+  display:grid;
+  grid-template-rows:1fr 1fr;
+  gap:12px;
+}
+.court-position{
+  background:#fff;
+  border-radius:18px;
+  padding:14px;
+  min-height:140px;
+  border:3px solid #d1d5db;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  font-size:28px;
+  font-weight:700;
+  box-shadow:0 4px 10px rgba(0,0,0,0.06);
+}
+.server{
+  background:#86efac !important;
+  border:4px solid #16a34a !important;
+}
+.position-title{
+  font-size:18px;
+  color:#6b7280;
+  margin-bottom:10px;
+  font-weight:700;
+}
+.position-num{
+  font-size:34px;
+  font-weight:900;
+  margin-top:6px;
+}
+.position-status{
+  margin-top:8px;
+  font-size:22px;
+  font-weight:900;
+}
+.control-panel{
+  display:flex;
+  gap:14px;
+  justify-content:center;
+  align-items:center;
+}
+.score-buttons{
+  display:flex;
+  gap:14px;
+  justify-content:center;
+  width:100%;
+}
+.score-buttons button{
+  width:110px;
+  height:110px;
+  border-radius:22px;
+  font-size:64px;
+  font-weight:900;
+  box-shadow:0 6px 12px rgba(0,0,0,0.15);
+}
+.server-info{
+  background:#fef9c3;
+  border-radius:20px;
+  padding:18px;
+  margin-top:16px;
+  text-align:center;
+  font-weight:900;
+}
+.server-info h2{
+  font-size:24px;
+  margin:0 0 10px 0;
+}
+.server-info h1{
+  font-size:42px;
+  margin:0;
+}
+.winner-box{
+  margin-top:16px;
+  background:#dcfce7;
+  border-radius:20px;
+  padding:18px;
+  text-align:center;
+  font-size:34px;
+  font-weight:bold;
+  display:none;
+}
+.bottom-buttons{
+  display:flex;
+  justify-content:center;
+  gap:16px;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+
+@media(max-width:1000px){
+  .score-board{
+    grid-template-columns:1fr;
+  }
+  .team{
+    min-height:auto;
+  }
+  .team-body{
+    min-height:auto;
+  }
+  .score{
+    font-size:120px;
+  }
+  .score-buttons button{
+    width:90px;
+    height:90px;
+    font-size:48px;
+  }
+  .server-info h1{
+    font-size:32px;
+  }
+}
+
+@media(max-width:700px){
+  body{padding:10px;}
+  .team-body{
+    grid-template-columns:1fr;
+  }
+  .score-panel{
+    order:1;
+    min-height:180px;
+  }
+  .court-area{
+    order:2;
+  }
+  .score{
+    font-size:96px;
+  }
+  .court-position{
+    min-height:120px;
+    font-size:22px;
+  }
+  .position-num{
+    font-size:28px;
+  }
+  .score-buttons button{
+    width:84px;
+    height:84px;
+    font-size:42px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="card">
+    <h1 style="text-align:center;">羽球雙打計分系統</h1>
+  </div>
+
+  <div class="card">
+    <h2>參賽人員輸入</h2>
+    <div class="input-row">
+      <input type="text" id="playerInput" placeholder="輸入參賽者名稱">
+      <button class="btn-blue" onclick="addPlayer()">新增</button>
+    </div>
+
+    <div class="players" id="playerList"></div>
+
+    <div class="info">
+      <div class="info-box">參賽人數：<span id="playerCount">0</span></div>
+      <div class="info-box">場次數量：<span id="matchCount">0</span></div>
+    </div>
+
+    <button class="btn-purple" style="margin-top:20px;" onclick="generateMatches()">自訂場次</button>
+  </div>
+
+  <div class="card">
+    <h2>所有場次</h2>
+    <div id="matchList"></div>
+  </div>
+
+  <div class="card" id="gameArea" style="display:none;">
+    <h2 style="text-align:center;">目前比賽</h2>
+<div class="card">
+
+  <h2 style="text-align:center;">選擇隊伍成員</h2>
+
+  <div style="
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+  ">
+
+    <!-- 左隊 -->
+    <div>
+
+      <h3>左隊</h3>
+
+      <select id="leftPlayer1" style="
+        width:100%;
+        padding:12px;
+        margin-bottom:10px;
+        border-radius:12px;
+        font-size:18px;
+      "></select>
+
+      <select id="leftPlayer2" style="
+        width:100%;
+        padding:12px;
+        border-radius:12px;
+        font-size:18px;
+      "></select>
+
+    </div>
+
+    <!-- 右隊 -->
+    <div>
+
+      <h3>右隊</h3>
+
+      <select id="rightPlayer1" style="
+        width:100%;
+        padding:12px;
+        margin-bottom:10px;
+        border-radius:12px;
+        font-size:18px;
+      "></select>
+
+      <select id="rightPlayer2" style="
+        width:100%;
+        padding:12px;
+        border-radius:12px;
+        font-size:18px;
+      "></select>
+
+    </div>
+
+  </div>
+
+  <div style="text-align:center;margin-top:20px;">
+    <button
+      class="btn-purple"
+      onclick="createCustomMatch()"
+    >
+      建立比賽
+    </button>
+  </div>
+
+</div>
+<div class="card" id="serverSelectCard">
+
+  <h2 style="text-align:center;">
+    選擇先發球隊
+  </h2>
+
+  <div style="
+    display:flex;
+    gap:20px;
+    justify-content:center;
+    margin-top:20px;
+    flex-wrap:wrap;
+  ">
+
+    <button
+      class="btn-blue"
+      onclick="selectFirstServer('left')"
+    >
+      左隊先發
+    </button>
+
+    <button
+      class="btn-red"
+      onclick="selectFirstServer('right')"
+      style="padding:14px 24px;font-size:18px;"
+    >
+      右隊先發
+    </button>
+
+  </div>
+
+</div>
+    <div class="score-board">
+      <div class="team left-team">
+        <h2 class="team-title">左隊</h2>
+
+        <div class="team-body">
+          <div class="score-panel">
+            <div class="score" id="leftScore">0</div>
+          </div>
+
+          <div class="court-area">
+            <div class="court-position" id="leftTopPos"></div>
+            <div class="court-position" id="leftBottomPos"></div>
+          </div>
+        </div>
+
+        <div class="control-panel">
+          <div class="score-buttons">
+            <button class="btn-green" onclick="addScore('left')">+</button>
+            <button class="btn-red" onclick="minusScore('left')">-</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="team right-team">
+        <h2 class="team-title">右隊</h2>
+
+        <div class="team-body">
+          <div class="court-area">
+            <div class="court-position" id="rightTopPos"></div>
+            <div class="court-position" id="rightBottomPos"></div>
+          </div>
+
+          <div class="score-panel">
+            <div class="score" id="rightScore">0</div>
+          </div>
+        </div>
+
+        <div class="control-panel">
+          <div class="score-buttons">
+            <button class="btn-green" onclick="addScore('right')">+</button>
+            <button class="btn-red" onclick="minusScore('right')">-</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="server-info">
+      <h2>目前發球方：<span id="serverSide"></span></h2>
+      <h1>發球員：<span id="serverPlayer"></span></h1>
+    </div>
+
+    <div class="winner-box" id="winnerBox"></div>
+
+    <div class="bottom-buttons">
+      <button class="btn-gray" onclick="resetGame()">重新開始</button>
+      <button class="btn-indigo" onclick="nextMatch()">下一局</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let players = [ "宗霖", "宗恩", "妹妺", "Cindy", "Aline", "羅傑", "明賀" ];
+let matches = [];
+let currentMatchIndex = 0;
+let leftScore = 0;
+let rightScore = 0;
+let serverSide = "左隊";
+let serverPlayer = "";
+let leftPositions = [];
+let rightPositions = [];
+let gameFinished = false;
+let currentServerTeam = "left";
+let firstServerTeam = "left";
+
+function addPlayer(){
+  const input = document.getElementById("playerInput");
+  const name = input.value.trim();
+  if(name === "") return;
+  players.push(name);
+  input.value = "";
+  renderPlayers();
+}
+
+function removePlayer(index){
+  players.splice(index,1);
+  renderPlayers();
+}
+
+function populatePlayerSelect(){
+
+  const selectIds = [
+    "leftPlayer1",
+    "leftPlayer2",
+    "rightPlayer1",
+    "rightPlayer2"
+  ];
+
+  selectIds.forEach((id, index)=>{
+
+    const select =
+      document.getElementById(id);
+
+    select.innerHTML = "";
+
+    players.forEach(player=>{
+
+      select.innerHTML += `
+        <option value="${player}">
+          ${player}
+        </option>
+      `;
+    });
+
+    // 預設選擇不同人
+
+    if(players[index]){
+
+      select.selectedIndex = index;
+    }
+  });
+}
+
+function renderPlayers(){
+
+  const list = document.getElementById("playerList");
+
+  list.innerHTML = "";
+
+  players.forEach((player,index)=>{
+
+    list.innerHTML += `
+      <div class="player-item">
+        ${player}
+        <button class="btn-red" onclick="removePlayer(${index})">
+          X
+        </button>
+      </div>
+    `;
+  });
+
+  document.getElementById("playerCount").innerText = players.length;
+
+  document.getElementById("matchCount").innerText =
+    Math.floor(players.length / 4);
+
+  populatePlayerSelect();
+}
+
+function createCustomMatch(){
+
+  const left1 =
+    document.getElementById("leftPlayer1").value;
+
+  const left2 =
+    document.getElementById("leftPlayer2").value;
+
+  const right1 =
+    document.getElementById("rightPlayer1").value;
+
+  const right2 =
+    document.getElementById("rightPlayer2").value;
+
+  // 防止重複選人
+
+  const selected = [
+    left1,
+    left2,
+    right1,
+    right2
+  ];
+
+  const unique = new Set(selected);
+
+  if(unique.size < 4){
+
+    alert("四位球員不可重複");
+
+    return;
+  }
+
+  matches = [];
+
+  matches.push({
+
+    leftTeam:[left2,left1],
+
+    rightTeam:[right2,right1]
+  });
+
+  currentMatchIndex = 0;
+
+  renderMatchList();
+
+  alert("比賽建立完成");
+startMatch();
+}
+
+function generateMatches(){
+  if(players.length < 4){
+    alert("至少需要4位參賽者");
+    return;
+  }
+
+  matches = [];
+  for(let i=0;i<players.length;i+=4){
+    const group = players.slice(i,i+4);
+    if(group.length === 4){
+      matches.push({
+        leftTeam:[group[0],group[1]],
+        rightTeam:[group[2],group[3]]
+      });
+    }
+  }
+
+  currentMatchIndex = 0;
+  renderMatchList();
+  document.getElementById("gameArea").style.display = "block";
+}
+
+function renderMatchList(){
+  const list = document.getElementById("matchList");
+  list.innerHTML = "";
+  matches.forEach((match,index)=>{
+    list.innerHTML += `
+      <div class="match-item ${index===currentMatchIndex ? 'active-match':''}">
+        <h3>第 ${index+1} 場</h3>
+        <div>${match.leftTeam[0]} / ${match.leftTeam[1]} VS ${match.rightTeam[0]} / ${match.rightTeam[1]}</div>
+      </div>
+    `;
+  });
+}
+
+function startMatch(){
+
+  const match = matches[currentMatchIndex];
+
+  leftScore = 0;
+  rightScore = 0;
+
+  gameFinished = false;
+
+  document.getElementById("winnerBox").style.display = "none";
+
+  leftPositions = [
+    match.leftTeam[1],
+    match.leftTeam[0]
+  ];
+
+  rightPositions = [
+    match.rightTeam[1],
+    match.rightTeam[0]
+  ];
+
+  currentServerTeam = firstServerTeam;
+
+  if(firstServerTeam === "left"){
+
+    serverSide = "左隊";
+
+    // 0分 -> 右發球區
+
+    serverPlayer = leftPositions[1];
+
+  }else{
+
+    serverSide = "右隊";
+
+    serverPlayer = rightPositions[0];
+  }
+
+  document.getElementById("gameArea").style.display = "block";
+
+  renderGame();
+}
+
+function getPosText(name, isServer){
+  return `
+    <div>
+      <div class="position-title">${name}</div>
+      <div class="position-num">${isServer ? "🏸" : ""}</div>
+      ${isServer ? '<div class="position-status">發球中</div>' : ''}
+    </div>
+  `;
+}
+
+function renderGame(){
+  const leftLeftPlayer = leftPositions[0];
+  const leftRightPlayer = leftPositions[1];
+  const rightLeftPlayer = rightPositions[0];
+  const rightRightPlayer = rightPositions[1];
+
+  document.getElementById("leftTopPos").innerHTML = `
+    <div>
+      <div class="position-title">左發球區</div>
+      <div>${leftLeftPlayer}</div>
+      ${serverPlayer===leftLeftPlayer ? '<div class="position-status">🏸 發球中</div>' : ''}
+    </div>
+  `;
+  document.getElementById("leftBottomPos").innerHTML = `
+    <div>
+      <div class="position-title">右發球區</div>
+      <div>${leftRightPlayer}</div>
+      ${serverPlayer===leftRightPlayer ? '<div class="position-status">🏸 發球中</div>' : ''}
+    </div>
+  `;
+  document.getElementById("rightTopPos").innerHTML = `
+    <div>
+      <div class="position-title">左發球區</div>
+      <div>${rightLeftPlayer}</div>
+      ${serverPlayer===rightLeftPlayer ? '<div class="position-status">🏸 發球中</div>' : ''}
+    </div>
+  `;
+  document.getElementById("rightBottomPos").innerHTML = `
+    <div>
+      <div class="position-title">右發球區</div>
+      <div>${rightRightPlayer}</div>
+      ${serverPlayer===rightRightPlayer ? '<div class="position-status">🏸 發球中</div>' : ''}
+    </div>
+  `;
+
+  
+
+  document.getElementById("leftTopPos").classList.toggle("server", serverPlayer===leftLeftPlayer);
+  document.getElementById("leftBottomPos").classList.toggle("server", serverPlayer===leftRightPlayer);
+  document.getElementById("rightTopPos").classList.toggle("server", serverPlayer===rightLeftPlayer);
+  document.getElementById("rightBottomPos").classList.toggle("server", serverPlayer===rightRightPlayer);
+
+  document.getElementById("leftScore").innerText = leftScore;
+  document.getElementById("rightScore").innerText = rightScore;
+  document.getElementById("serverSide").innerText = serverSide;
+  document.getElementById("serverPlayer").innerText = serverPlayer;
+}
+
+function swapLeftPositions(){
+
+  [leftPositions[0], leftPositions[1]] =
+  [leftPositions[1], leftPositions[0]];
+}
+
+function swapRightPositions(){
+
+  [rightPositions[0], rightPositions[1]] =
+  [rightPositions[1], rightPositions[0]];
+}
+
+function addScore(side){
+
+  if(gameFinished) return;
+
+  // 左隊得分
+  if(side === "left"){
+
+    leftScore++;
+
+    // 原本就是左隊發球
+    if(currentServerTeam === "left"){
+
+      // 同一人繼續發球
+      // 只交換位置
+
+      swapLeftPositions();
+
+    }else{
+
+      // 發球權轉移到左隊
+
+      currentServerTeam = "left";
+
+      serverSide = "左隊";
+
+      // 根據分數決定站位發球
+
+      if(leftScore % 2 === 0){
+
+        serverPlayer = leftPositions[1];
+
+      }else{
+
+        serverPlayer = leftPositions[0];
+      }
+    }
+
+    serverSide = "左隊";
+  }
+
+  // 右隊得分
+  else{
+
+    rightScore++;
+
+    // 原本就是右隊發球
+    if(currentServerTeam === "right"){
+
+      // 同一人繼續發球
+      // 只交換位置
+
+      swapRightPositions();
+
+    }else{
+
+      // 發球權轉移
+
+      currentServerTeam = "right";
+
+      serverSide = "右隊";
+
+      if(rightScore % 2 === 0){
+
+        serverPlayer = rightPositions[0];
+
+      }else{
+
+        serverPlayer = rightPositions[1];
+      }
+    }
+
+    serverSide = "右隊";
+  }
+
+  checkWinner();
+
+  renderGame();
+}
+function minusScore(side){
+  if(gameFinished) return;
+
+  if(side === "left"){
+
+    leftScore--;
+
+    serverSide = "左隊";
+
+    // 偶數分 -> 左邊發球
+    // 奇數分 -> 右邊發球
+
+    serverPlayer =
+      (leftScore % 2 === 0)
+      ? leftPositions[1]
+      : leftPositions[0];
+
+  }else{
+
+    rightScore--;
+
+    serverSide = "右隊";
+
+    serverPlayer =
+      (rightScore % 2 === 0)
+      ? rightPositions[0]
+      : rightPositions[1];
+  }
+  renderGame();
+}
+
+function checkWinner(){
+  if(leftScore === 30){
+    finishGame("左隊獲勝");
+    return;
+  }
+  if(rightScore === 30){
+    finishGame("右隊獲勝");
+    return;
+  }
+  if(leftScore >= 21 && leftScore - rightScore >= 2){
+    finishGame("左隊獲勝");
+    return;
+  }
+  if(rightScore >= 21 && rightScore - leftScore >= 2){
+    finishGame("右隊獲勝");
+    return;
+  }
+}
+
+function finishGame(text){
+  gameFinished = true;
+  const winnerBox = document.getElementById("winnerBox");
+  winnerBox.style.display = "block";
+  winnerBox.innerHTML = `🏆 ${text}`;
+}
+
+function resetGame(){
+  startMatch();
+}
+
+function nextMatch(){
+  if(currentMatchIndex + 1 >= matches.length){
+    alert("所有場次已完成");
+    return;
+  }
+  currentMatchIndex++;
+  renderMatchList();
+  startMatch();
+}
+
+function selectFirstServer(team){
+
+  firstServerTeam = team;
+
+  startMatch();
+}
+renderPlayers();
+</script>
+
+</body>
+</html>
