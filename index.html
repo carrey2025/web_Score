@@ -154,9 +154,13 @@ button{
   justify-content:center;
   align-items:center;
   text-align:center;
-  font-size:28px;
   font-weight:700;
   box-shadow:0 4px 10px rgba(0,0,0,0.06);
+}
+.player-name{
+  font-size:32px;
+  font-weight:900;
+  line-height:1.2;
 }
 .server{
   background:#86efac !important;
@@ -334,6 +338,10 @@ button{
 
     font-size:14px;
   }
+
+.player-name{
+  font-size:24px;
+}
 
   .score-buttons{
 
@@ -834,28 +842,28 @@ function renderGame(){
   document.getElementById("leftTopPos").innerHTML = `
     <div>
       <div class="position-title">左發球區</div>
-      <div>${leftLeftPlayer}</div>
+      <div class="player-name">${leftLeftPlayer}</div>
       ${serverPlayer===leftLeftPlayer ? '<div class="position-status">🏸 發球中</div>' : ''}
     </div>
   `;
   document.getElementById("leftBottomPos").innerHTML = `
     <div>
       <div class="position-title">右發球區</div>
-      <div>${leftRightPlayer}</div>
+      <div class="player-name">${leftRightPlayer}</div>
       ${serverPlayer===leftRightPlayer ? '<div class="position-status">🏸 發球中</div>' : ''}
     </div>
   `;
   document.getElementById("rightTopPos").innerHTML = `
     <div>
       <div class="position-title">左發球區</div>
-      <div>${rightLeftPlayer}</div>
+      <div class="player-name">${rightLeftPlayer}</div>
       ${serverPlayer===rightLeftPlayer ? '<div class="position-status">🏸 發球中</div>' : ''}
     </div>
   `;
   document.getElementById("rightBottomPos").innerHTML = `
     <div>
       <div class="position-title">右發球區</div>
-      <div>${rightRightPlayer}</div>
+      <div class="player-name">${rightRightPlayer}</div>
       ${serverPlayer===rightRightPlayer ? '<div class="position-status">🏸 發球中</div>' : ''}
     </div>
   `;
