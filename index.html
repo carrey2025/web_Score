@@ -2,7 +2,11 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width,
+initial-scale=1,
+maximum-scale=1,
+user-scalable=no">
 <title>羽球雙打計分系統</title>
 <style>
 body{
@@ -130,7 +134,7 @@ button{
   padding:10px;
 }
 .score{
-  font-size:180px;
+  font-size:120px;
   font-weight:900;
   line-height:1;
   color:#000;
@@ -252,31 +256,152 @@ button{
 }
 
 @media(max-width:700px){
-  body{padding:10px;}
+
+  body{
+    padding:6px;
+  }
+
+  .container{
+    max-width:100%;
+  }
+
+  .score-board{
+
+    /* 保持左右排列 */
+
+    grid-template-columns:1fr 1fr;
+
+    gap:6px;
+  }
+
+  .team{
+
+    min-height:auto;
+
+    padding:8px;
+
+    border-radius:14px;
+  }
+
+  .team-title{
+
+    font-size:20px;
+  }
+
   .team-body{
+
     grid-template-columns:1fr;
+
+    gap:6px;
+
+    min-height:auto;
   }
+
   .score-panel{
-    order:1;
-    min-height:180px;
+
+    min-height:100px;
+
+    padding:4px;
   }
-  .court-area{
-    order:2;
-  }
+
   .score{
-    font-size:96px;
+
+    font-size:72px;
   }
+
+  .court-area{
+
+    gap:6px;
+  }
+
   .court-position{
-    min-height:120px;
+
+    min-height:72px;
+
+    font-size:16px;
+
+    padding:6px;
+
+    border-radius:12px;
+  }
+
+  .position-title{
+
+    font-size:12px;
+  }
+
+  .position-status{
+
+    font-size:14px;
+  }
+
+  .score-buttons{
+
+    gap:6px;
+  }
+
+  .score-buttons button{
+
+    width:54px;
+
+    height:54px;
+
+    font-size:28px;
+
+    border-radius:14px;
+  }
+
+  .server-info{
+
+    padding:10px;
+
+    margin-top:8px;
+  }
+
+  .server-info h2{
+
+    font-size:16px;
+  }
+
+  .server-info h1{
+
     font-size:22px;
   }
-  .position-num{
-    font-size:28px;
+
+  .bottom-buttons{
+
+    gap:8px;
   }
-  .score-buttons button{
-    width:84px;
-    height:84px;
-    font-size:42px;
+
+  .bottom-buttons button{
+
+    font-size:14px;
+
+    padding:10px 14px;
+  }
+
+  .info-box{
+
+    font-size:14px;
+
+    padding:10px;
+  }
+
+  input{
+
+    font-size:16px;
+
+    padding:10px;
+  }
+
+  .btn-blue,
+  .btn-purple,
+  .btn-gray,
+  .btn-indigo{
+
+    font-size:14px;
+
+    padding:10px 14px;
   }
 }
 </style>
