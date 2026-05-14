@@ -976,8 +976,10 @@ function minusScore(side){
 
   if(side === "left"){
 
+if(leftScore>0)
+{
     leftScore--;
-
+}
     serverSide = "左隊";
 
     // 偶數分 -> 左邊發球
@@ -989,9 +991,10 @@ function minusScore(side){
       : leftPositions[0];
 
   }else{
-
+if(rightScore>0)
+{
     rightScore--;
-
+}
     serverSide = "右隊";
 
     serverPlayer =
